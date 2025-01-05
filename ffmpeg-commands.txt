@@ -1,0 +1,28 @@
+Make GIF
+-----------------------------------------------
+
+ffmpeg -ss [start_time] -t [duration] -i input_video.mp4 -vf "fps=10,scale=320:-1:flags=lanczos" -c:v gif output.gif
+
+ffmpeg -ss 6:35 -t 1:00 -i input_video.mp4 -vf "fps=10,scale=320:-1:flags=lanczos" -c:v gif output.gif
+
+
+
+Combine audio and video from two videos
+------------------------------------------------------
+
+ffmpeg -i video.mp4 -i audio.mp4 -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac output.mp4
+
+
+Start audio 30 seconds into the file
+ffmpeg -i video.mp4 -ss 30 -i audio.mp4 -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac output.mp4
+
+
+Trim video
+---------------------------------------------------------
+
+ffmpeg -i video.mp4 -ss 03:40 -to 05:47 -c copy output_video.mp4
+
+
+
+ffmpeg -ss 00:00:58 -to 00:02:00 -i input.mp4 -c:v copy -c:a copy output.mp4
+
