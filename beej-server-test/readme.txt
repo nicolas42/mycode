@@ -3,6 +3,8 @@ Testing Beej's Guide to Network Programming on AWS EC2 t2.nano
 
 from https://beej.us/guide/bgnet/html/index-wide.html#a-simple-stream-server
 
+This are notes about what was done.  
+
 Successfully run the stream server example from Beej's Guide and test using Telnet on an EC2 t2.nano instance.
 
 Launch a new ec2 instance.  I chose the cheapest t2.nano with AWS Linux.  Create a public-private security key or associated an existing one that you have.  I'm using a pem file.
