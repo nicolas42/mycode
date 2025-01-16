@@ -4,20 +4,6 @@ import fnmatch
 import time
 from datetime import datetime
 
-def improve_pattern(pattern):
-    """
-    Make pattern matching more flexible like Unix find.
-    If pattern doesn't contain wildcards, treat it as *pattern*.
-    """
-    if pattern and not any(c in pattern for c in '*?[]'):
-        if pattern.startswith('.'):
-            # For patterns starting with ., match files ending with this
-            return f'*{pattern}'
-        else:
-            # For other patterns, match files containing this
-            return f'*{pattern}*'
-    return pattern
-
 def convert_size_to_bytes(size_str):
     """
     Convert a size string (like '1M', '500K', '10G') to bytes.
@@ -57,7 +43,7 @@ def find_files(start_path, name_pattern=None, type_filter=None, mtime=None,
         min_size (int): Minimum file size in bytes
         max_size (int): Maximum file size in bytes
     """
-    name_pattern = improve_pattern(name_pattern)
+    # name_pattern = improve_pattern(name_pattern)
     try:
         for root, dirs, files in os.walk(start_path):
             # Handle directory matches
@@ -79,12 +65,19 @@ def find_files(start_path, name_pattern=None, type_filter=None, mtime=None,
     except Exception as e:
         print(f"Error during search: {e}")
 
-def matches_criteria(path, name_pattern, file_type, mtime, min_size, max_size):
+
+
+def matches_criteria(path, query, file_type, mtime, min_size, max_size):
     """Check if a path matches all the search criteria."""
     try:
-        # Check name pattern
-        if name_pattern and not fnmatch.fnmatch(os.path.basename(path), name_pattern):
-            return False
+        # That all the words in the query are there
+        if query is not None:
+            query_words = query.split()  # Split query into words
+            for query_word in query_words:
+                result = path.lower().find(query_word.lower())
+                if result == -1:
+                    return False
+
         
         # Check file type
         is_file = os.path.isfile(path)
@@ -100,7 +93,9 @@ def matches_criteria(path, name_pattern, file_type, mtime, min_size, max_size):
                 return False
         
         # Check file size (only for files, not directories)
-        if is_file and (min_size is not None or max_size is not None):
+        if min_size is not None or max_size is not None:
+            if not is_file:
+                return False 
             file_size = os.path.getsize(path)
             if min_size is not None and file_size < min_size:
                 return False
