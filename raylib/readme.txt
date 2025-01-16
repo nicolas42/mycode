@@ -1,9 +1,7 @@
-I'm using this in macos as a static build using command line tools from this 
-from https://github.com/raysan5/raylib/wiki/Working-on-macOS
-
-I made make-raylib.sh which should automate downloading and building raylib.  It also has a macos build command with all the frameworks that you should need.  
-
+Compile in macos
 clang -framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL libraylib.a -Iraylib/src main.c && ./a.out
+
+I built raylib as a static library in macos using this guide from https://github.com/raysan5/raylib/wiki/Working-on-macOS.  There should be a make-raylib.sh file which has the commands.
 
 
 

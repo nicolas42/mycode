@@ -8,24 +8,13 @@ struct node {
 };
 
 
-static struct node memory[1000];
-// static int memory_index = 0;
-static int memory_count = 0;
-static int memory_capacity = 1000;
-
-struct node* alloc()
-{
-  memory_count += 1;
-  return &memory[memory_count-1];
-}
-
 struct node* insert(struct node* np, int data)
 {
 
   // if the pointer is null then make a new one and return it so that it
   // is assigned to the pointer of the previous node.  
   if (np == NULL){
-    struct node* nnp = alloc(); // malloc(sizeof(struct node));
+    struct node* nnp = malloc(sizeof(struct node));
     nnp->value = data;
     nnp->next = NULL;
     return nnp;
@@ -33,23 +22,6 @@ struct node* insert(struct node* np, int data)
   else {
     np->next = insert(np->next, data);
     return np;
-  }
-
-}
-
-
-void insert2(struct node** npp, int data)
-{
-  
-  if (*npp == NULL){
-    struct node* nnp = alloc(); // malloc(sizeof(struct node));
-    nnp->value = data;
-    nnp->next = NULL;
-    *npp = nnp;
-  }
-  else {
-    struct node* np = *npp;
-    insert2(&(np->next), data);
   }
 
 }
@@ -76,6 +48,38 @@ void demo1()
 
 }
 
+
+// Custom memory allocator.  No reallocation possible.
+// -------------------------------------------------------------
+
+
+static struct node memory[1000];
+// static int memory_index = 0;
+static int memory_count = 0;
+static int memory_capacity = 1000;
+
+struct node* alloc()
+{
+  memory_count += 1;
+  return &memory[memory_count-1];
+}
+
+void insert2(struct node** npp, int data)
+{
+  
+  if (*npp == NULL){
+    struct node* nnp = alloc(); // malloc(sizeof(struct node));
+    nnp->value = data;
+    nnp->next = NULL;
+    *npp = nnp;
+  }
+  else {
+    struct node* np = *npp;
+    insert2(&(np->next), data);
+  }
+
+}
+
 void demo2()
 {
   
@@ -90,6 +94,7 @@ void demo2()
   print(head);
   
 }
+
 
 int main(){
   srand(time(NULL));
