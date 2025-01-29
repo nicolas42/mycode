@@ -1,3 +1,7 @@
+// clang -framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL libraylib.a -Iraylib/src ../image-viewer-raylib.c
+// ./a.out <dirr>
+// deep reads a directory for images. 
+
 #include "raylib.h"
 #include "raymath.h"
 #include <dirent.h>
