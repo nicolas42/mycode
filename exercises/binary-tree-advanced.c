@@ -19,7 +19,7 @@ typedef struct {
   // int index;
 } Node_Array;
 
-void tree_append(Node_Array* xs, Node x){            
+void node_allocate(Node_Array* xs, Node x){            
 
   if (xs->count == xs->capacity) { 
     if (xs->capacity == 0) { xs->capacity = 10; }
@@ -34,7 +34,7 @@ int tree_insert(Node_Array* na, int node_index, int data){
 
   if (node_index == -1){ 
     Node nnp = {.value=data, .left=-1, .right=-1};
-    tree_append(na, nnp);
+    node_allocate(na, nnp);
     return na->count-1;
   }
 

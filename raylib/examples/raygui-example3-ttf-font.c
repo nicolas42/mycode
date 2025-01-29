@@ -4,6 +4,8 @@
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 
+#define FONT_PATH "fonts/Roboto-Medium.ttf"
+
 int main(void)
 {
     const int screenWidth = 800;
@@ -12,7 +14,7 @@ int main(void)
     SetTargetFPS(60);
 
     // 1) Load a custom TTF font at size 32
-    Font myFont = LoadFontEx("resources/fonts/Roboto-Medium.ttf", 100, NULL, 0);
+    Font myFont = LoadFontEx(FONT_PATH, 100, NULL, 0);
     SetTextureFilter(myFont.texture, TEXTURE_FILTER_TRILINEAR); // also bilinear
     
     // 2) Tell raygui to use that font

@@ -29,3 +29,5 @@ Internal Timing Mechanisms:
 GetFrameTime() and related timing functions rely on BeginDrawing() and EndDrawing() to calculate the time elapsed between frames. Skipping them can result in incorrect frame timing and inconsistent behavior.
 Your Initial Code's Issue
 
+
+

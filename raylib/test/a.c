@@ -1,64 +1,87 @@
+/*******************************************************************************************
+*
+*   raylib [shapes] example - bouncing ball
+*
+*   Example originally created with raylib 2.5, last time updated with raylib 2.5
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2013-2024 Ramon Santamaria (@raysan5)
+*
+********************************************************************************************/
+
 #include "raylib.h"
-#include <string.h>
+#include <stdio.h>
 
-#define MAX_TEXT_LENGTH 1024
-
-int main(void) {
+//------------------------------------------------------------------------------------
+// Program main entry point
+//------------------------------------------------------------------------------------
+int main(void)
+{
     // Initialization
+    //---------------------------------------------------------
     const int screenWidth = 800;
-    const int screenHeight = 600;
+    const int screenHeight = 450;
 
-    InitWindow(screenWidth, screenHeight, "Simple Text Editor");
-    SetTargetFPS(60);
+    SetConfigFlags(FLAG_MSAA_4X_HINT);
+    InitWindow(screenWidth, screenHeight, "raylib [shapes] example - bouncing ball");
 
-    char text[MAX_TEXT_LENGTH] = ""; // Store the editable text
-    int textLength = 0;             // Current length of the text
-    bool hasFocus = true;           // Focus for editing
+    Vector2 ballPosition = { GetScreenWidth()/2.0f, GetScreenHeight()/2.0f };
+    Vector2 ballSpeed = { 5.0f, 4.0f };
+    int ballRadius = 20;
 
-    while (!WindowShouldClose()) {
-        // Input handling
-        if (hasFocus) {
-            int key = GetCharPressed();
+    bool pause = 0;
+    int framesCounter = 0;
 
-            // Handle character input
-            while (key > 0) {
-                if (textLength < MAX_TEXT_LENGTH - 1) {
-                    text[textLength++] = (char)key;
-                    text[textLength] = '\0';
-                }
-                key = GetCharPressed();
-            }
+    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
+    //----------------------------------------------------------
 
-            // Handle backspace
-            if (IsKeyPressed(KEY_BACKSPACE) && textLength > 0) {
-                text[--textLength] = '\0';
-            }
-        }
+    // Main game loop
+    while (!WindowShouldClose())    // Detect window close button or ESC key
+    {
+        // Update
+        //-----------------------------------------------------
 
-        // Draw the interface
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-
-        DrawText("Simple Text Editor", 10, 10, 20, GRAY);
-        DrawRectangle(10, 50, screenWidth - 20, screenHeight - 100, LIGHTGRAY);
-        DrawRectangleLines(10, 50, screenWidth - 20, screenHeight - 100, DARKGRAY);
-        DrawText(text, 15, 55, 20, BLACK);
-
-        if (!hasFocus) {
-            DrawText("Click to focus", 15, 55 + 30, 20, DARKGRAY);
-        }
-
-        EndDrawing();
-
-        // Handle focus by clicking the editor area
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            Vector2 mouse = GetMousePosition();
-            hasFocus = CheckCollisionPointRec(mouse, (Rectangle){10, 50, screenWidth - 20, screenHeight - 100});
-        }
+    if (IsKeyPressed(KEY_SPACE)) {  // Check if a key has been pressed once
+      pause = !pause;
+      printf("pause: %d\n", pause);
     }
 
-    // Cleanup
-    CloseWindow();
+        if (!pause)
+        {
+            ballPosition.x += ballSpeed.x;
+            ballPosition.y += ballSpeed.y;
+
+            // Check walls collision for bouncing
+            if ((ballPosition.x >= (GetScreenWidth() - ballRadius)) || (ballPosition.x <= ballRadius)) ballSpeed.x *= -1.0f;
+            if ((ballPosition.y >= (GetScreenHeight() - ballRadius)) || (ballPosition.y <= ballRadius)) ballSpeed.y *= -1.0f;
+        }
+        else framesCounter++;
+        //-----------------------------------------------------
+
+        // Draw
+        //-----------------------------------------------------
+        BeginDrawing();
+
+            ClearBackground(RAYWHITE);
+
+            DrawCircleV(ballPosition, (float)ballRadius, MAROON);
+            DrawText("PRESS SPACE to PAUSE BALL MOVEMENT", 10, GetScreenHeight() - 25, 20, LIGHTGRAY);
+
+            // On pause, we draw a blinking message
+            if (pause && ((framesCounter/30)%2)) DrawText("PAUSED", 350, 200, 30, GRAY);
+
+            DrawFPS(10, 10);
+
+        EndDrawing();
+        //-----------------------------------------------------
+    }
+
+    // De-Initialization
+    //---------------------------------------------------------
+    CloseWindow();        // Close window and OpenGL context
+    //----------------------------------------------------------
 
     return 0;
 }

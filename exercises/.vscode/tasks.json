@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-I", "raylib/src",
+                "-g",
+                "${workspaceFolder}/exercises/${fileBasename}",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/exercises",
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

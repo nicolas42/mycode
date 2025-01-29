@@ -1,0 +1,2 @@
+clang -framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL libraylib.a -Iraylib/src -g main.c && ./a.out
+

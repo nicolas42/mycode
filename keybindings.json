@@ -1,0 +1,83 @@
+// Place your key bindings in this file to override the defaults
+[
+//     { "key": "ctrl+r",                    "command": "debug.openView",
+//     "when": "!debuggersAvailable" },
+
+// { "key": "ctrl+r",                    "command": "workbench.action.debug.start",
+//     "when": "debuggersAvailable && debugState == 'inactive'" },
+
+// { "key": "ctrl+r",                    "command": "workbench.action.debug.continue",
+//     "when": "debugState == 'stopped'" },
+
+
+
+    {
+        "key": "ctrl+tab",
+        "command": "workbench.action.nextEditor"
+    },
+    {
+        "key": "ctrl+shift+tab",
+        "command": "workbench.action.previousEditor"
+    },
+    {
+        "key": "ctrl+n",
+        "command": "cursorDown",
+        "when": "textInputFocus"
+    },
+    // {
+    //     "key": "alt+n",
+    //     "command": "workbench.action.files.newUntitledFile"
+    // },
+    {
+        "key": "ctrl+p",
+        "command": "cursorUp",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "alt+v",
+        "command": "cursorPageUp",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "ctrl+v",
+        "command": "cursorPageDown",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "ctrl+k",
+        "command": "editor.action.deleteLines",
+        "when": "textInputFocus && !editorReadonly"
+    },
+    {
+        "key": "alt+d",
+        "command": "deleteRight",
+        "when": "textInputFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+a",
+        "command": "cursorLineStart",
+        "when": "textInputFocus && !editorReadonly"
+    },
+    {
+        "key": "alt+a",
+        "command": "editor.action.selectAll",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "ctrl+e",
+        "command": "cursorLineEnd",
+        "when": "textInputFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+m",
+        "command": "lineBreakInsert",
+        "when": "textInputFocus && !editorReadonly"
+    },
+    {
+        "key": "alt+shift+m",
+        "command": "editor.action.copyLinesDownAction",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+]
+
+

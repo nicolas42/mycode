@@ -1,0 +1,178 @@
+<html>
+  <head>
+<!--
+    <style>
+      body { margin: 0 auto; max-width: 1000px; min-height; 1000px; }
+      div { width: 100%; min-height: 1000px; }
+    </style>
+-->
+  </head>
+  <body>
+    
+    <div>
+    <canvas></canvas><br>
+    <input id="checkbox_random_color" type="checkbox" checked>Random Color</input>
+    <input id="slider_angle" style="width: 100%" type="range" min="1" max="10000" value="5000">
+    <input id="slider_scale" style="width: 100%" type="range" min="1" max="200" value="100">
+    <input id="slider_distance" style="width: 100%" type="range" min="1" max="1000" value="500">
+    <input id="button_random_color" type="button" value="random_color">
+    <input id="button_animate" type="button" value="animate">    
+
+    <audio id="spookyMusic" loop>
+      <source src="Paul Buckmaster - 12 monkeys-PPHqANTdXJw.opus" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+
+    <button id="playPauseButton">play/pause music</button>
+
+
+    <pre id='output'></pre>
+    </div>
+
+    <script>
+      const music = document.getElementById('spookyMusic');
+      const playPauseButton = document.getElementById('playPauseButton');
+
+      playPauseButton.addEventListener('click', () => {
+	  if (music.paused) {
+              music.play();
+	  } else {
+              music.pause();
+	  }
+      });
+      
+    </script>
+
+    <script>
+
+      const canvas = document.querySelector('canvas');
+      const slider_angle = document.querySelector('#slider_angle');
+      const slider_scale = document.querySelector('#slider_scale');
+      const slider_distance = document.querySelector('#slider_distance');
+      const checkbox_random_color = document.querySelector("#checkbox_random_color");
+      const button_random_color = document.querySelector("#button_random_color");
+      const button_animate = document.querySelector("#button_animate");      
+      const output_element = document.querySelector("#output");
+
+      function qs(a){
+	  return document.querySelector(a);
+      }
+
+      function make_random_color() {
+          return "#" + Math.floor(Math.random() * 16777216).toString(16);
+      }
+
+
+      var pattern = {
+	  canvas: canvas,
+	  canvas_width: 800,
+	  canvas_height: 800,
+	  
+	  random_color: true,
+	  angle: 0,
+	  color: 0,
+	  max_distance: 500,
+	  scale: 1,
+	  line_width: 1,
+	  step: 1,
+	  
+	  animate: 0,
+	  is_moving: 0,
+	  timer_id: 0,
+      };
+
+      
+      function main()
+      {
+	  pattern.angle = slider_angle.value / 10000 * 2 * Math.PI;
+	  pattern.scale =  slider_scale.value / 100;
+	  pattern.max_distance =  slider_distance.value;
+	  show(pattern);
+      }
+      
+      function show(arg) {
+
+	  var c = arg.canvas;
+	  c.width = arg.canvas_width;
+	  c.height = arg.canvas_height;
+
+	  if (arg.random_color) {
+	      arg.color = make_random_color();
+	  }
+
+	  var arg_text = JSON.stringify(arg, null, 4);
+	  console.log(arg_text);
+	  output_element.innerHTML = arg_text;
+
+          const ctx = c.getContext('2d');
+          ctx.setTransform(); // reset all transforms
+          ctx.fillStyle = "black";
+          ctx.fillRect(0, 0, c.width, c.height);
+          ctx.translate(c.width / 2, c.height / 2);
+          ctx.scale(arg.scale, arg.scale);
+
+          for (let distance = 0; distance < arg.max_distance; distance += arg.step) {
+              ctx.strokeStyle = arg.color;
+              ctx.lineWidth = arg.line_width;
+              ctx.beginPath();
+              ctx.moveTo(0, 0);
+              ctx.lineTo(0, distance);
+              ctx.stroke();
+              ctx.translate(0, distance);
+              ctx.rotate(arg.angle);
+          }
+      }
+
+
+      function animate(state){
+          state.timer_id = setInterval( function(){ 
+	      state.angle += 0.00001;
+	      show(state); 
+          }, 10 ); 
+      }
+
+
+      
+
+      // Event listeners for user input
+      slider_angle.addEventListener('input', function(event) {
+	  pattern.angle = slider_angle.value / 10000 * 2 * Math.PI;
+ 	  show(pattern);	  
+      });
+
+      slider_scale.addEventListener('input', function(event) {
+	  pattern.scale =  slider_scale.value / 100;
+	  show(pattern);
+      });
+
+      slider_distance.addEventListener('input', function(event) {
+	  pattern.max_distance =  slider_distance.value;
+	  show(pattern);	  
+      });
+
+      // Mouse wheel to adjust angle
+      canvas.addEventListener('wheel', function(event) {
+	  event.preventDefault();
+	  pattern.angle += event.deltaY / 1000000 * 2 * Math.PI;
+	  show(pattern);
+      });
+
+      checkbox_random_color.addEventListener('change', function(event){
+	  pattern.random_color = event.target.checked;
+	  show(pattern);
+      });
+
+      button_random_color.addEventListener('click', function(event){
+	  pattern.color = make_random_color();
+	  show(pattern);
+      });
+
+      button_animate.addEventListener('click', function(event){
+	  animate(pattern);
+      });
+
+      main();
+      
+    </script>
+  </body>
+</html>

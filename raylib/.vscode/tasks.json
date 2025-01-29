@@ -1,0 +1,29 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build sobel",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-framework", "CoreVideo",
+                "-framework", "IOKit",
+                "-framework", "Cocoa",
+                "-framework", "GLUT",
+                "-framework", "OpenGL",
+                "-g",
+                "libraylib.a",
+                "-I", "raylib/src",
+                "sobel.c",
+                "-o", "a.out"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        }
+    ]
+}
